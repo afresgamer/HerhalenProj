@@ -6,7 +6,7 @@ public class GameController : MonoBehaviour {
     //イベント関係呼び出し(将来的にはここら辺は一つにまとめる予定)
     [SerializeField, Header("ライトイベント")]
     private BoxCollider Light_box;
-    [SerializeField,Tooltip("樽イベント")]
+    [SerializeField,Tooltip("樽イベント"),Header("樽イベント")]
     private BoxCollider taru_box;
 
     private int Light_count = 1;//ライト用のインデックス

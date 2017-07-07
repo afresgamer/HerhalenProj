@@ -10,13 +10,6 @@ public class Player : MonoBehaviour {
 
     public static Vector2 X_oculus;
 
-    //public static Vector3 prevPos;
-    //public static Vector3 nowPos;
-    //[HideInInspector]
-    //public Vector3 pos;
-    //[HideInInspector]
-    //public float prevPosDistance;
-
     void Start () {
         
         Blur.enabled = false;//ブラー初期化
@@ -28,16 +21,8 @@ public class Player : MonoBehaviour {
 
     private void Update()
     {
-        
         if(Input.GetKeyDown(KeyCode.F5))
-        {
-            OVRManager.display.RecenterPose();
-        }
-    }
-
-    private void LateUpdate()
-    {
-        
+        { OVRManager.display.RecenterPose(); }
     }
 
     void FixedUpdate()
@@ -49,9 +34,9 @@ public class Player : MonoBehaviour {
     public void Oculus_Move(Transform obj_Move,Rigidbody _rb)
     {
         //移動(Keyboard)
-        float v = Input.GetAxis("Vertical");
-        if(v >= 0.5f) { transform.position += transform.forward * v * Time.deltaTime; }
-        else if(v <= -0.5f) { transform.position += transform.forward * v * Time.deltaTime; }
+        //float v = Input.GetAxis("Vertical");
+        //if(v >= 0.5f) { transform.position += transform.forward * v * Time.deltaTime; }
+        //else if(v <= -0.5f) { transform.position += transform.forward * v * Time.deltaTime; }
         //移動(Oculus Touch)
         X_oculus = OVRInput.Get(OVRInput.RawAxis2D.LThumbstick);
 

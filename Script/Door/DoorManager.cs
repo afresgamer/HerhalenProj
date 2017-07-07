@@ -8,8 +8,7 @@ public class DoorManager : MonoBehaviour {
     bool OnDoor = true;
     bool OffDoor = false;
     //ドアイベント用のインデックス
-    [SerializeField]
-    private int EventDoor = 3;
+    [SerializeField] private int EventDoor = 3;
 
     void Start () {
         //ドアがアタッチされてなかった強制的にぶっこみ、ドアがなかったらエラー出す

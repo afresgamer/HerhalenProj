@@ -7,11 +7,15 @@ public class LightEvent : MonoBehaviour {
     Light[] lightS;
     [SerializeField]
     private float Wait_time = 3;
+    [SerializeField, Tooltip("ライトのメッシュ情報"), Header("ライトのメッシュ情報")]
+    private GameObject lightObj;
+    private MeshRenderer[] meshS;
     //[SerializeField]
     //private float Light_Speed = 1;
     
 	void Start () {
         lightS = GetComponentsInChildren<Light>();
+        meshS = lightObj.GetComponentsInChildren<MeshRenderer>();
 	}
 	
 	
@@ -31,6 +35,11 @@ public class LightEvent : MonoBehaviour {
                 l.range = 0;
                 //Debug.Log(l.range);
             }
+            foreach(MeshRenderer mesh in meshS)
+            {
+                mesh.material.EnableKeyword("_ENISTION");
+                mesh.material.SetColor("_Emission_Color", new Color(0,0,0));
+            }
             StartCoroutine("Test_Light_Eventer");
             
         }
@@ -43,6 +52,11 @@ public class LightEvent : MonoBehaviour {
         {
             l.range = 6;
             //Debug.Log(l.range);
+        }
+        foreach(MeshRenderer mesh in meshS)
+        {
+            mesh.material.EnableKeyword("_EMISSION");
+            mesh.material.SetColor("_Emission_Color", new Color(1, 1, 1));
         }
     }
 }

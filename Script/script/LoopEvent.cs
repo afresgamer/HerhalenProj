@@ -3,15 +3,13 @@
 public class LoopEvent : MonoBehaviour {
 
     GameObject startposition;
-    [SerializeField,Tooltip("フェード処理"),Header("フェード処理")]
-    Fadebutton Getfade;
-    [SerializeField,Tooltip("女の子の位置"),Header("女の子の位置")]
-    private Transform Girl;
+    [SerializeField, Tooltip("フェード処理"), Header("フェード処理")] private OpeningEvent fade;
+    [SerializeField,Tooltip("女の子の位置"),Header("女の子の位置")] private Transform Girl;
+    [SerializeField,Tooltip("スピード設定"),Header("スピード設定")] private GGFade1 ggfade;
 
 	void Start ()
     {
         startposition = GameObject.FindGameObjectWithTag("PlayerStart");
-        
 	}
 
 	void Update ()
@@ -21,13 +19,13 @@ public class LoopEvent : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("hit");
+        //Debug.Log("hit");
         if (other.gameObject.tag == "Player")
         {
-            StartCoroutine(Getfade.Fadein());
+            StartCoroutine(fade.WaitFadeInOut(ggfade.Speed));
             GameController.count++;
             other.transform.position = startposition.transform.position;
-            Girl.transform.position = startposition.transform.forward + startposition.transform.right;
+            Girl.transform.position = startposition.transform.forward;
         }
     }
 

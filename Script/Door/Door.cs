@@ -38,17 +38,16 @@ public class Door : MonoBehaviour {
         if (other.gameObject.tag == "Player")
         {
             near = true;
-			Debug.Log ("hit");
+			//Debug.Log ("hit");
         }
     }
 
-    /*private void OnTriggerExit(Collider other)
+    private void OnTriggerExit(Collider other)
     {
-        if(other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player")
         {
             near = false;
+            Debug.Log("out");
         }
-        
     }
-    */
 }
