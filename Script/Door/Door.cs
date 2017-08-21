@@ -1,36 +1,31 @@
 ﻿using UnityEngine;
-using UnityEngine.VR;
 
 public class Door : MonoBehaviour {
 
     Animator anim;
     bool near;
-
-    //予備システム(入力判定めんどいのでVR動く動かないによって値を変えてますよ 今は使ってないけど)
-    bool OnVRInput_Useing()
-    {
-        bool Isvr = VRDevice.isPresent ? OVRInput.GetDown(OVRInput.RawButton.A) : Input.GetKeyDown(KeyCode.Space);
-        return Isvr;
-    }
+    public static bool isSisterMove;
+    public static bool isButtonDown;
 
 	void Start () {
-        anim = GetComponent<Animator>();
+        isButtonDown = false;
+        isSisterMove = false;
+        anim = GetComponentInChildren<Animator>();
 	}
 
-    //goto ドアは今後のことで一番処理が増えるので、ドアの角度を調整するようにしたい(将来的に)
     void Update()
     {
-        if (near)
+        if (DoorGrab.isDoorTouchGrab && isButtonDown)
         {
-            anim.SetBool("D_Open", true);
-            //Debug.Log("Open");
+            if (DoorGrab.isGrab)
+            {
+                anim.SetBool("D_Open", near);
+                Debug.Log("anim start");
+            }
         }
-        /*else if(!near)
-        {
-            anim.SetBool("D_Open", false);
-            //Debug.Log("Close");
-        }
-        */
+        if (!DoorGrab.isDoorTouchGrab && isButtonDown) { anim.SetBool("D_Open", near); }
+
+        //Debug.Log("door");
     }
 
     private void OnTriggerEnter(Collider other)
@@ -38,7 +33,26 @@ public class Door : MonoBehaviour {
         if (other.gameObject.tag == "Player")
         {
             near = true;
-			//Debug.Log ("hit");
+            //Debug.Log ("hit");
+        }
+        if(other.gameObject.tag == "Sister")
+        {
+            isSisterMove = true;
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            near = true;
+            if ( OVRInput.GetDown(OVRInput.RawButton.LHandTrigger) || Input.GetKeyDown(KeyCode.LeftControl))
+            { isButtonDown = true; }
+            //Debug.Log ("hit");
+        }
+        if (other.gameObject.tag == "Sister")
+        {
+            isSisterMove = true;
         }
     }
 
@@ -47,7 +61,13 @@ public class Door : MonoBehaviour {
         if (other.gameObject.tag == "Player")
         {
             near = false;
-            Debug.Log("out");
+            isButtonDown = false;
+            anim.SetBool("D_Open", isButtonDown);
+            //Debug.Log("out");
+        }
+        if (other.gameObject.tag == "Sister")
+        {
+            isSisterMove = false;
         }
     }
 }

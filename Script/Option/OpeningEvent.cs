@@ -1,59 +1,77 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class OpeningEvent : MonoBehaviour {
 
-    Animator getani;
-    public bool stop;
-    public bool hit;
-    [SerializeField] Image imagebox;
-    [SerializeField] GGFade1 ggfade;
-    [SerializeField] private float waitTime = 3;
+    //public static OpeningEvent instance = null;
+
+    Animator anim;
+    public static bool init;
+    public static bool Stop;
+    public static bool Hit;
+    Image image;
+    [SerializeField] private GGFade ggfade;
+
+    void Awake()
+    {
+        //フェード関係を管理
+        /*if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != null)
+        {
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(gameObject);
+        */
+    }
 
     void Start()
     {
-        ggfade.red = imagebox.GetComponent<Image>().color.r;
-        ggfade.green = imagebox.GetComponent<Image>().color.g;
-        ggfade.blue = imagebox.GetComponent<Image>().color.b;
-        ggfade.alfa = 1;
-        imagebox.GetComponent<Image>().color = new Color(ggfade.red, ggfade.green, ggfade.blue, ggfade.alfa);
+        init = false;
+        Stop = false;
+        Hit = false;
+        image = FindObjectOfType<Image>();
+        //Debug.Log(image.color.a);
+        image.color = new Color(image.color.r, image.color.g, image.color.b, image.color.a);
     }
 
     void Update()
     {
-        if (Input.GetKeyDown("g") || OVRInput.Get(OVRInput.RawButton.A))
+        if (Input.GetKeyDown("p") || OVRInput.GetDown(OVRInput.RawButton.X)) { init = true; }
+        //フェード初期化
+        if (init) { Hit = false; Stop = false; image.color = new Color(image.color.r, image.color.g, image.color.b, 0); init = false; }
+        //フェード基本処理
+        if (Input.GetKeyDown("g") || OVRInput.GetDown(OVRInput.RawButton.A))
         {
-            stop = true;
+            Stop = true;
         }
-        if (stop == true) { Colorout(ggfade.Speed); }
-        if (ggfade.alfa < 0) { stop = false; }
+        if (Stop == true) { Colorout(ggfade.Speed); }
+        if (image.color.a < 0) { Stop = false; }
 
-        if (Input.GetKeyDown("f") || OVRInput.Get(OVRInput.RawButton.B))
+        if (Input.GetKeyDown("f") || OVRInput.GetDown(OVRInput.RawButton.B))
         {
-            hit = true;
+            Hit = true;
         }
-        if (hit == true) { Colorin(ggfade.Speed); }
-        if (ggfade.alfa > 1) { hit = false; }
+        if (Hit == true) { Colorin(ggfade.Speed); }
+        if (image.color.a > 1) { Hit = false; }
     }
 
     public void Colorout(float speed)//徐々に明るくなっていく
     {
-            ggfade.alfa -= ggfade.Speed * Time.deltaTime;
-            imagebox.GetComponent<Image>().color = new Color(ggfade.red, ggfade.green, ggfade.blue, ggfade.alfa);
+        float a = image.color.a;
+        a -= speed * Time.deltaTime;
+        image.color = new Color(image.color.r, image.color.g, image.color.b, a);
+        //Debug.Log(a);
     }
 
     public void Colorin(float speed)//徐々に暗くなっていく
     {
-        ggfade.alfa += ggfade.Speed * Time.deltaTime;
-        imagebox.GetComponent<Image>().color = new Color(ggfade.red, ggfade.green, ggfade.blue, ggfade.alfa);
-    }
-
-    public IEnumerator WaitFadeInOut(float speed)//徐々に暗くなって明るくなる
-    {
-        if(ggfade.alfa == 1) { yield return new WaitForSeconds(waitTime); Colorout(speed); }
-        else { Colorin(speed); }
-        //yield break;
+        float a = image.color.a;
+        a += speed * Time.deltaTime;
+        image.color = new Color(image.color.r, image.color.g, image.color.b, a);
+        //Debug.Log(a);
     }
 
 }

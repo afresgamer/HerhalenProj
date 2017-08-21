@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(menuName = "Fade")]
-public class GGFade1 : ScriptableObject {
+[CreateAssetMenu(menuName = "Fade",fileName = "Fade")]
+public class GGFade : ScriptableObject {
 
-    public float alfa, red, green, blue;
     public float Speed;
 
 }

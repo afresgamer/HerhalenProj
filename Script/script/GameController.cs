@@ -29,7 +29,7 @@ public class GameController : MonoBehaviour {
         //2周目になったらライトイベント起動
         if(count == Light_count) {
             Light_box.enabled = true;
-            Debug.Log("LIGHT ON");
+            //Debug.Log("LIGHT ON");
         }
         else {
             Light_box.enabled = false;

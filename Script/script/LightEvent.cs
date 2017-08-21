@@ -1,28 +1,27 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class LightEvent : MonoBehaviour {
 
     Light[] lightS;
-    [SerializeField]
+    [SerializeField,Tooltip("ライトの再点灯の待機時間"),Header("ライトの再点灯の待機時間")]
     private float Wait_time = 3;
     [SerializeField, Tooltip("ライトのメッシュ情報"), Header("ライトのメッシュ情報")]
     private GameObject lightObj;
     private MeshRenderer[] meshS;
     //[SerializeField]
     //private float Light_Speed = 1;
-    
-	void Start () {
+
+    void Start()
+    {
         lightS = GetComponentsInChildren<Light>();
         meshS = lightObj.GetComponentsInChildren<MeshRenderer>();
-	}
-	
+    }
 	
 	void Update ()
     {
-
-	}
+        //Debug.Log(meshS.Length);
+    }
 
     void OnTriggerEnter(Collider other)
     {
@@ -32,13 +31,13 @@ public class LightEvent : MonoBehaviour {
             //Debug.Log("Shine Light");
             foreach (Light l in lightS)
             {
-                l.range = 0;
+                l.intensity = 0;
                 //Debug.Log(l.range);
             }
             foreach(MeshRenderer mesh in meshS)
             {
-                mesh.material.EnableKeyword("_ENISTION");
-                mesh.material.SetColor("_Emission_Color", new Color(0,0,0));
+                mesh.material.DisableKeyword("_EMISSION");
+                Debug.Log("light is vanish");
             }
             StartCoroutine("Test_Light_Eventer");
             
@@ -50,13 +49,13 @@ public class LightEvent : MonoBehaviour {
         yield return new WaitForSeconds(Wait_time);
         foreach (Light l in lightS)
         {
-            l.range = 6;
+            l.intensity = 3;
             //Debug.Log(l.range);
         }
         foreach(MeshRenderer mesh in meshS)
         {
             mesh.material.EnableKeyword("_EMISSION");
-            mesh.material.SetColor("_Emission_Color", new Color(1, 1, 1));
+            Debug.Log("light is event");
         }
     }
 }

@@ -4,11 +4,14 @@ public class DoorManager : MonoBehaviour {
 
     [SerializeField,Tooltip("ドアNumberの順番通りにアタッチして下さい")]
     private Door[] door;
+    [SerializeField, Tooltip("大きいドア"), Header("大きいドア")]
+    private TwoDoor twoDoor;
     //ドアのオンオフの切り替え
     bool OnDoor = true;
     bool OffDoor = false;
     //ドアイベント用のインデックス
-    [SerializeField] private int EventDoor = 3;
+    [SerializeField,Tooltip("開けとく扉を選択"),Header("開けとく扉を選択")]
+    private int EventDoor = 3;
 
     void Start () {
         //ドアがアタッチされてなかった強制的にぶっこみ、ドアがなかったらエラー出す
@@ -25,6 +28,8 @@ public class DoorManager : MonoBehaviour {
             door[i].enabled = OffDoor;
         }
         door[0].enabled = OnDoor;
+        //大きいドア
+        twoDoor.enabled = OnDoor;
 	}
 
     
@@ -33,7 +38,7 @@ public class DoorManager : MonoBehaviour {
 		if(GameController.count > 0)
         {
             door[0].enabled = OffDoor;
-            door[EventDoor].enabled = OnDoor;//入口近くのドアだけ起動
+            door[EventDoor].enabled = OnDoor;//出口のドアだけ起動
         }
 	}
 }
